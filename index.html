@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>Тег FORM</title>
+  <style type="text/css">
+	.field {clear:both; text-align:right; line-height:25px;}
+        label {float:left; padding-right:10px;}
+        .main {float:left}
+        .error{
+		border: 1px solid red;
+	}
+
+  </style>	
+ </head>
+ <body>
+<script src="index.js"></script>
+ <form action="index.js" id="myForm" method="get" onsubmit="return MyForm.validate()">
+     <div class="main">
+	<div class="field">
+	   <label for="input_fio">ФИО</label>
+	   <input type="text" name="fio" id="input_fio" />
+	</div>
+	<div class="field">
+	   <label for="input_email">Email</label>
+	   <input type="text" name="email" id="input_email" />
+	</div>
+	<div class="field">
+	   <label for="input_phone">Телефон</label>
+	   <input type="text" name="phone" id="input_phone" />
+	</div>
+	<p><input type="submit" ></p>     
+	<div id="resultContainer"></div>
+     </div>
+ </form>
+ 
+ </body>
+</html>
