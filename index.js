@@ -66,6 +66,21 @@ var MyForm = {
 
 
     submit   : function(){
-	    alert(this.validate())
+	    var val_arr = this.validate();
+        var isValid = val_arr[0];
+	    var invalid_inputs = val_arr[1];
+
+	    if(isValid === false ){
+            document.getElementById("input_fio").setAttribute("class","");
+            document.getElementById("input_phone").setAttribute("class","");
+            document.getElementById("input_email").setAttribute("class","");
+
+            for(var i = 0; i < invalid_inputs.length; i ++){
+                document.getElementById(invalid_inputs[i]).setAttribute("class","error")
+            }
+            event.preventDefault()
+        }else{
+            alert("GOOD");
+        }
     }
 };
