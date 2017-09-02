@@ -82,20 +82,24 @@ var MyForm = {
         console.log(res.phone);
         return res;
     },
-	setData  : function(Object){ },
+	setData  : function(obj){
+        document.forms["myForm"]["input_fio"].value = obj.fio;
+        document.forms["myForm"]["input_phone"].value = obj.phone;
+        document.forms["myForm"]["input_email"].value = obj.email;
+    },
 
 
     submit   : function(event){
-	    var val_arr = this.validate();
+        var val_arr = this.validate();
         var isValid = val_arr[0];
-	    var invalid_inputs = val_arr[1];
-	    var btn = document.getElementById("submit_button");
-	    var div = document.getElementById("resultContainer");
+        var invalid_inputs = val_arr[1];
+        var btn = document.getElementById("submit_button");
+        var div = document.getElementById("resultContainer");
         document.getElementById("input_fio").setAttribute("class","");
         document.getElementById("input_phone").setAttribute("class","");
         document.getElementById("input_email").setAttribute("class","");
         btn.disabled = false;
-	    div.setAttribute("class","");
+        div.setAttribute("class","");
         if(isValid === false ){
             for(var i = 0; i < invalid_inputs.length; i ++){
                 document.getElementById(invalid_inputs[i]).setAttribute("class","error");
@@ -112,7 +116,7 @@ var MyForm = {
                 var json = JSON.parse(xhr.response);
                 var status = json["status"];
                 if (status === "error") {
-                    div.setAttribute("class", "error")
+                    div.setAttribute("class", "error");
                     div.innerHTML = json["reason"];
                     document.getElementById("submit_button").setAttribute("disabled","false");
                     break;
@@ -123,7 +127,7 @@ var MyForm = {
                     break;
                 }
                 if(status === "progress"){
-                    var timeout = json["timeout"]
+                    var timeout = json["timeout"];
                     div.setAttribute("class","progress");
                     div.innerHTML = "Progress";
                     this.sleep(timeout);
@@ -131,7 +135,7 @@ var MyForm = {
 
             }
             btn.disabled = false;
-	    }
+        }
 
         event.preventDefault();
     }
