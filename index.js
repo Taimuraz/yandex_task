@@ -68,7 +68,20 @@ var MyForm = {
 		 res_arr.push(inv_elem_arr);
 		return res_arr;
 	},
-	getData  : function(){ },
+	getData  : function(){
+	    var res = {
+	        email : "",
+            phone : "",
+            fio : ""
+        };
+        res.email = document.forms["myForm"]["input_email"].value;
+        res.fio = document.forms["myForm"]["input_fio"].value;
+        res.phone = document.forms["myForm"]["input_phone"].value;
+	    console.log(res.fio);
+        console.log(res.email);
+        console.log(res.phone);
+        return res;
+    },
 	setData  : function(Object){ },
 
 
@@ -92,6 +105,7 @@ var MyForm = {
             var xhr = new XMLHttpRequest();
             var adress = document.getElementById("myForm").getAttribute("action");
 
+
             while(true) {
                 xhr.open('GET', adress, false);
                 xhr.send();
@@ -111,7 +125,6 @@ var MyForm = {
                 if(status === "progress"){
                     var timeout = json["timeout"]
                     div.setAttribute("class","progress");
-                    div.innerHTML = "Progress";
                     div.innerHTML = "Progress";
                     this.sleep(timeout);
                 }
