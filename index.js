@@ -1,5 +1,13 @@
 
 var MyForm = {
+    sleep :   function (milliseconds) {
+              var start = new Date().getTime();
+                for (var i = 0; i < 1e7; i++) {
+                    if ((new Date().getTime() - start) > milliseconds){
+                        break;
+                    }
+                }
+    },
 	validate : function(){
 	     var phone_sum_limit = 30;
 		 var isValid = true;
@@ -50,7 +58,6 @@ var MyForm = {
 
          //============================================================== EMAIL VALIDATION
          var email = document.forms["myForm"]["input_email"].value;
-         console.log(email);
          if(!(email.match(email_1)||email.match(email_2)||email.match(email_3)||email.match(email_4)||email.match(email_5)||email.match(email_6)) ){
              isValid = false;
              inv_elem_arr.push("input_email");
@@ -65,22 +72,54 @@ var MyForm = {
 	setData  : function(Object){ },
 
 
-    submit   : function(){
+    submit   : function(event){
 	    var val_arr = this.validate();
         var isValid = val_arr[0];
 	    var invalid_inputs = val_arr[1];
-
-	    if(isValid === false ){
-            document.getElementById("input_fio").setAttribute("class","");
-            document.getElementById("input_phone").setAttribute("class","");
-            document.getElementById("input_email").setAttribute("class","");
-
+	    var btn = document.getElementById("submit_button");
+	    var div = document.getElementById("resultContainer");
+        document.getElementById("input_fio").setAttribute("class","");
+        document.getElementById("input_phone").setAttribute("class","");
+        document.getElementById("input_email").setAttribute("class","");
+        btn.disabled = false;
+	    div.setAttribute("class","");
+        if(isValid === false ){
             for(var i = 0; i < invalid_inputs.length; i ++){
-                document.getElementById(invalid_inputs[i]).setAttribute("class","error")
+                document.getElementById(invalid_inputs[i]).setAttribute("class","error");
             }
-            event.preventDefault()
         }else{
-            alert("GOOD");
-        }
+            btn.disabled = true;
+            var xhr = new XMLHttpRequest();
+            var adress = document.getElementById("myForm").getAttribute("action");
+
+            while(true) {
+                xhr.open('GET', adress, false);
+                xhr.send();
+                var json = JSON.parse(xhr.response);
+                var status = json["status"];
+                if (status === "error") {
+                    div.setAttribute("class", "error")
+                    div.innerHTML = json["reason"];
+                    document.getElementById("submit_button").setAttribute("disabled","false");
+                    break;
+                }
+                if (status === "success") {
+                    div.setAttribute("class","success");
+                    div.innerHTML = "Success";
+                    break;
+                }
+                if(status === "progress"){
+                    var timeout = json["timeout"]
+                    div.setAttribute("class","progress");
+                    div.innerHTML = "Progress";
+                    div.innerHTML = "Progress";
+                    this.sleep(timeout);
+                }
+
+            }
+            btn.disabled = false;
+	    }
+
+        event.preventDefault();
     }
 };
